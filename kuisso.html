@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kuis Evaluasi Komprehensif Sistem Operasi (60 Soal)</title>
+  <style>
+    :root {
+      --primary: #1f4e79;
+      --secondary: #2980b9;
+      --bg: #f4f7f6;
+      --card-bg: #ffffff;
+      --text: #2c3e50;
+      --success: #27ae60;
+      --danger: #e74c3c;
+      --border: #dcdde1;
+      --muted: #7f8c8d;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background-color: var(--card-bg);
+      padding: 35px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      color: var(--primary);
+      text-align: center;
+      margin-bottom: 5px;
+      font-size: 1.8rem;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: var(--muted);
+      margin-bottom: 30px;
+      font-style: italic;
+      font-size: 0.95rem;
+    }
+
+    .section-title {
+      background-color: var(--primary);
+      color: white;
+      padding: 12px 18px;
+      border-radius: 6px;
+      margin-top: 35px;
+      margin-bottom: 25px;
+      font-size: 1.2rem;
+    }
+
+    .question-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--secondary);
+      border-radius: 8px;
+      padding: 22px;
+      margin-bottom: 25px;
+    }
+
+    .question-text {
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-bottom: 15px;
+      white-space: pre-line;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .option-btn {
+      background-color: #f8f9fa;
+      border: 1px solid var(--border);
+      padding: 12px 16px;
+      border-radius: 6px;
+      text-align: left;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+      color: var(--text);
+    }
+
+    .option-btn:hover:not(:disabled) {
+      background-color: #e9ecef;
+      border-color: var(--secondary);
+    }
+
+    .option-btn.selected-correct {
+      background-color: #d4edda;
+      border-color: var(--success);
+      color: #155724;
+      font-weight: bold;
+    }
+
+    .option-btn.selected-wrong {
+      background-color: #f8d7da;
+      border-color: var(--danger);
+      color: #721c24;
+      font-weight: bold;
+    }
+
+    .option-btn.show-correct {
+      background-color: #d4edda;
+      border-color: var(--success);
+      color: #155724;
+    }
+
+    .essay-input {
+      width: 100%;
+      height: 100px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: inherit;
+      resize: vertical;
+      box-sizing: border-box;
+      margin-bottom: 12px;
+      font-size: 0.95rem;
+    }
+
+    .submit-essay-btn {
+      background-color: var(--secondary);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .submit-essay-btn:hover:not(:disabled) {
+      background-color: #1f618d;
+    }
+
+    .feedback-box {
+      margin-top: 18px;
+      padding: 15px;
+      border-radius: 6px;
+      display: none;
+      font-size: 0.93rem;
+    }
+
+    .feedback-box.correct {
+      background-color: #e8f8f5;
+      border: 1px solid #a3e4d7;
+      color: #117864;
+    }
+
+    .feedback-box.wrong {
+      background-color: #fdedec;
+      border: 1px solid #f5b7b1;
+      color: #922b21;
+    }
+
+    .feedback-box.essay-key {
+      background-color: #ebf5fb;
+      border: 1px solid #a9cce3;
+      color: #1b4f72;
+    }
+
+    .option-explanation-list {
+      margin-top: 10px;
+      padding-left: 0;
+      list-style: none;
+    }
+
+    .option-explanation-item {
+      padding: 8px 12px;
+      margin-bottom: 6px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+
+    .opt-correct-bg {
+      background-color: #d4edda;
+      border-left: 4px solid var(--success);
+      color: #155724;
+    }
+
+    .opt-wrong-bg {
+      background-color: #f8d7da;
+      border-left: 4px solid var(--danger);
+      color: #721c24;
+    }
+
+    #score-summary {
+      text-align: center;
+      background: #eef2f7;
+      padding: 25px;
+      border-radius: 8px;
+      margin-top: 35px;
+    }
+
+    #score-val {
+      font-size: 2.8rem;
+      font-weight: bold;
+      color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Kuis Evaluasi Komprehensif Sistem Operasi</h1>
+    <div class="subtitle">Mencakup Teori Konsep, Sejarah Evolusi 1950–Modern, CLI Linux, dan Praktikum VirtualBox (Total 60 Soal)</div>
+
+    <!-- BAGIAN 1: PILIHAN GANDA -->
+    <h2 class="section-title">Bagian I: Soal Pilihan Ganda (50 Soal)</h2>
+    <div id="pg-container"></div>
+
+    <!-- BAGIAN 2: ESSAI -->
+    <h2 class="section-title">Bagian II: Soal Essai / Uraian (10 Soal)</h2>
+    <div id="essay-container"></div>
+
+    <!-- RINGKASAN SKOR -->
+    <div id="score-summary">
+      <h3>Hasil Evaluasi Pilihan Ganda</h3>
+      <div id="score-val">0 / 50</div>
+      <p id="score-text">Jawab semua soal pilihan ganda di atas untuk melihat nilai akhir Anda secara real-time!</p>
+    </div>
+  </div>
+
+  <script>
+    // DATA SOAL PILIHAN GANDA (50 SOAL) DENGAN PENJELASAN UNTUK TIAP OPSI A-E
+    const questionsPG = [
+      {
+        q: "1. Salah satu tujuan utama Sistem Operasi dalam hal 'Efisiensi' adalah...",
+        opts: [
+          "A. Menyediakan antarmuka berbasis GUI yang ramah pengguna",
+          "B. Memastikan CPU tidak menganggur (idle) terlalu lama dan sumber daya terpakai optimal",
+          "C. Menyediakan fitur sensor sidik jari dan kata sandi",
+          "D. Menjamin pengguna dapat menonton video sambil chatting",
+          "E. Menghapus file sampah secara otomatis"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. Menyediakan antarmuka ramah pengguna adalah tujuan dalam aspek Kemudahan.",
+          "B": "Benar. Efisiensi berfokus pada pengoptimalan pemakaian hardware agar CPU tidak idle terlalu lama.",
+          "C": "Salah. Fitur sensor sidik jari dan kata sandi masuk dalam tujuan Keamanan.",
+          "D": "Salah. Menonton video sambil chatting adalah contoh kenyamanan melalui multitasking.",
+          "E": "Salah. Menghapus file sampah adalah utilitas pemeliharaan, bukan tujuan konsep efisiensi OS."
+        }
+      },
+      {
+        q: "2. Menurut materi, sasaran pengembang aplikasi (application developer) dari Sistem Operasi adalah...",
+        opts: [
+          "A. Menyediakan lingkungan yang cepat, nyaman, dan aman bagi end-user",
+          "B. Menjamin penggunaan sumber daya hardware secara adil",
+          "C. Menyediakan standar API agar aplikasi berjalan di atas OS tanpa perlu mengatur hardware secara langsung",
+          "D. Menghapus kebutuhan memori RAM pada laptop fisik",
+          "E. Menyediakan fitur pengeditan video secara otomatis"
+        ],
+        ans: "C",
+        exps: {
+          "A": "Salah. Menyediakan lingkungan yang nyaman dan aman adalah Sasaran Pengguna.",
+          "B": "Salah. Menjamin alokasi sumber daya secara adil dan efisien adalah Sasaran Sistem.",
+          "C": "Benar. OS menyediakan standar API agar pengembang tidak perlu memrogram perintah hardware tingkat rendah.",
+          "D": "Salah. OS tidak menghapus kebutuhan RAM fisik.",
+          "E": "Salah. Pengeditan video adalah fungsi aplikasi spesifik, bukan sasaran pengembang dari OS."
+        }
+      },
+      {
+        q: "3. Komponen utama pada era 1950-1959 yang digunakan dalam pemrosesan batch awal adalah...",
+        opts: [
+          "A. Sirkuit Terpadu (Integrated Circuit / IC)",
+          "B. Tabung Vakum (Vacuum Tubes) & Kartu Berlubang (Punch Cards)",
+          "C. Mikroprosesor Intel 8086",
+          "D. Solid State Drive (SSD)",
+          "E. Sensor Biometrik"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. Integrated Circuit (IC) baru mulai berkembang pesat pada era 1960-an.",
+          "B": "Benar. Era 1950-an mengandalkan tabung vakum dan masukan program melalui punch card/pita magnetik.",
+          "C": "Salah. Mikroprosesor lahir pada era 1970-an.",
+          "D": "Salah. SSD adalah teknologi media penyimpanan modern era 2000-an.",
+          "E": "Salah. Sensor biometrik adalah teknologi keamanan era modern."
+        }
+      },
+      {
+        q: "4. Sistem operasi pertama yang dikembangkan oleh General Motors untuk komputer IBM pada era 1950-an dikenal sebagai...",
+        opts: [
+          "A. UNIX",
+          "B. GM-NAA I/O",
+          "C. MS-DOS",
+          "D. IBM OS/360",
+          "E. CP/M"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. UNIX diciptakan pada tahun 1970 oleh Ken Thompson dan Dennis Ritchie.",
+          "B": "Benar. GM-NAA I/O adalah salah satu sistem batch processing awal yang dikembangkan General Motors untuk IBM.",
+          "C": "Salah. MS-DOS dikembangkan pada tahun 1981.",
+          "D": "Salah. IBM OS/360 dirilis pada tahun 1964 (era 1960-an).",
+          "E": "Salah. CP/M lahir pada era 1970-an untuk mikrokomputer."
+        }
+      },
+      {
+        q: "5. Karakteristik utama dari Batch System awal pada era 1950-an adalah...",
+        opts: [
+          "A. Mendukung interaksi GUI menggunakan Mouse",
+          "B. Mengeksekusi satu pekerjaan secara berurutan (single-stream batch) tanpa interaksi pengguna langsung",
+          "C. Membagi waktu CPU secara real-time ke ratusan pengguna sekaligus",
+          "D. Menggunakan koneksi internet Cloud",
+          "E. Berjalan di atas HP Android"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. GUI baru dipopulerkan pada era 1980-an.",
+          "B": "Benar. Batch system awal mengeksekusi 1 program sekali jalan secara berurutan tanpa interaksi pengguna.",
+          "C": "Salah. Pembagian waktu CPU (Time-Sharing) baru lahir di era 1960-an.",
+          "D": "Salah. Komputasi Cloud adalah era modern.",
+          "E": "Salah. Perangkat mobile belum ada pada era 1950-an."
+        }
+      },
+      {
+        q: "6. Perkembangan hardware utama yang menandai era 1960–1969 dalam pembuatan komputer yang lebih kecil dan cepat adalah...",
+        opts: [
+          "A. Tabung Vakum",
+          "B. Sirkuit Terpadu (Integrated Circuit / IC)",
+          "C. Transistor Tunggal",
+          "D. Artificial Intelligence Processing Unit",
+          "E. Quantum Processor"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. Tabung vakum adalah teknologi era 1950-an yang berukuran besar dan panas.",
+          "B": "Benar. IC mulai digunakan pada era 1960-an menggantikan komponen diskrit sehingga komputer makin kecil dan cepat.",
+          "C": "Salah. Transistor mulai menggeser tabung vakum pada akhir 1950-an sebelum disatukan menjadi IC.",
+          "D": "Salah. NPU/AI Processing Unit baru hadir di era modern.",
+          "E": "Salah. Komputer kuantum masih dalam tahap riset era modern."
+        }
+      },
+      {
+        q: "7. Salah satu OS besar pertama yang dirancang pada tahun 1964 untuk mendukung berbagai jajaran hardware IBM adalah...",
+        opts: [
+          "A. IBM OS/360",
+          "B. Windows 95",
+          "C. Ubuntu Linux",
+          "D. Android",
+          "E. MS-DOS"
+        ],
+        ans: "A",
+        exps: {
+          "A": "Benar. IBM OS/360 dirilis tahun 1964 dan memelopori arsitektur OS serbaguna.",
+          "B": "Salah. Windows 95 dirilis tahun 1995.",
+          "C": "Salah. Ubuntu dirilis pertama kali tahun 2004.",
+          "D": "Salah. Android diperkenalkan pada 2007/2008.",
+          "E": "Salah. MS-DOS dirilis tahun 1981."
+        }
+      },
+      {
+        q: "8. Konsep pembagian waktu CPU secara efisien sehingga seolah-olah setiap pengguna memiliki komputernya sendiri disebut...",
+        opts: [
+          "A. Batch Processing",
+          "B. Time-Sharing",
+          "C. Single-Tasking",
+          "D. Offline Processing",
+          "E. Spooling"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. Batch processing mengeksekusi tugas secara bertahap tanpa alokasi waktu bergantian bagi user interaktif.",
+          "B": "Benar. Time-sharing membagi CPU slice ke banyak user interaktif.",
+          "C": "Salah. Single-tasking hanya menjalankan 1 program dalam satu waktu.",
+          "D": "Salah. Offline processing berarti pemrosesan tanpa terhubung langsung ke CPU utama.",
+          "E": "Salah. Spooling menyimpan data sementara di buffer sebelum diproses I/O."
+        }
+      },
+      {
+        q: "9. Sistem operasi pionir yang dikembangkan di Bell Labs pada tahun 1970 oleh Ken Thompson dan Dennis Ritchie adalah...",
+        opts: [
+          "A. MS-DOS",
+          "B. UNIX",
+          "C. Linux",
+          "D. MacOS",
+          "E. Windows XP"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. MS-DOS diciptakan oleh Tim Paterson / Microsoft tahun 1981.",
+          "B": "Benar. UNIX lahir tahun 1970 di Bell Labs dan ditulis menggunakan bahasa C.",
+          "C": "Salah. Linux diciptakan oleh Linus Torvalds tahun 1991.",
+          "D": "Salah. MacOS dipopulerkan Apple mulai 1984.",
+          "E": "Salah. Windows XP rilis tahun 2001."
+        }
+      },
+      {
+        q: "10. Sistem operasi populer untuk komputer mikro awal di era 1970-an sebelum era MS-DOS adalah...",
+        opts: [
+          "A. CP/M (Control Program for Microcomputers)",
+          "B. Windows 3.1",
+          "C. Android 14",
+          "D. Ubuntu 22.04",
+          "E. iOS 17"
+        ],
+        ans: "A",
+        exps: {
+          "A": "Benar. CP/M ciptaan Gary Kildall menjadi OS standar komputasi mikro 8-bit era 1970-an.",
+          "B": "Salah. Windows 3.1 rilis era 1990-an.",
+          "C": "Salah. Android 14 rilis tahun 2023.",
+          "D": "Salah. Ubuntu 22.04 rilis tahun 2022.",
+          "E": "Salah. iOS 17 rilis tahun 2023."
+        }
+      },
+      {
+        q: "11. Kemunculan mikroprosesor pada era 1970-an mendorong perubahan besar berupa...",
+        opts: [
+          "A. Terciptanya komputer yang lebih murah, kecil, dan lahirnya PC",
+          "B. Hilangnya kebutuhan memori simpanan",
+          "C. Penghentian pengembangan bahasa C",
+          "D. Peralihan penuh ke komputasi awan (Cloud)",
+          "E. Penutupan proyek UNIX"
+        ],
+        ans: "A",
+        exps: {
+          "A": "Benar. Mikroprosesor menyatukan CPU dalam satu chip sehingga memicu lahirnya Personal Computer (PC).",
+          "B": "Salah. Kebutuhan memori justru semakin meningkat.",
+          "C": "Salah. Bahasa C berkembang pesat untuk membangun kernel UNIX.",
+          "D": "Salah. Cloud computing baru muncul beberapa dekade kemudian.",
+          "E": "Salah. Proyek UNIX justru makin pesat dan teradopsi luas."
+        }
+      },
+      {
+        q: "12. Sistem operasi berbasis antarmuka grafis komersial pertama yang meledak dan mempopulerkan penggunaan mouse pada tahun 1984 adalah...",
+        opts: [
+          "A. MS-DOS",
+          "B. Apple Macintosh (Mac OS Classic)",
+          "C. UNIX System V",
+          "D. Linux RedHat",
+          "E. Windows 95"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. MS-DOS berbasis teks (CLI).",
+          "B": "Benar. Apple Macintosh yang dirilis tahun 1984 mempopulerkan antarmuka GUI dan mouse secara komersial.",
+          "C": "Salah. UNIX System V berbasis CLI.",
+          "D": "Salah. RedHat Linux baru muncul era 1990-an.",
+          "E": "Salah. Windows 95 dirilis tahun 1995."
+        }
+      },
+      {
+        q: "13. Kernel open-source berbasis UNIX yang dikembangkan oleh Linus Torvalds pada tahun 1991 dinamakan...",
+        opts: [
+          "A. Minix",
+          "B. Linux",
+          "C. Xubuntu",
+          "D. MS-DOS",
+          "E. Solaris"
+        ],
+        ans: "B",
+        exp: "Linus Torvalds mengumumkan kernel Linux pada tahun 1991 sebagai proyek open-source.",
+        exps: {
+          "A": "Salah. Minix adalah OS edukasi buatan Tanenbaum yang menginspirasi Linus Torvalds.",
+          "B": "Benar. Linus Torvalds merilis kernel Linux pada tahun 1991.",
+          "C": "Salah. Xubuntu adalah distro Linux turunan Ubuntu berbasis Xfce.",
+          "D": "Salah. MS-DOS adalah OS proprietary buatan Microsoft.",
+          "E": "Salah. Solaris adalah distro UNIX dari Sun Microsystems."
+        }
+      },
+      {
+        q: "14. Sistem operasi Microsoft yang sangat sukses di era 1990-an (rilis 1995) dengan memperkenalkan tombol Start dan Taskbar adalah...",
+        opts: [
+          "A. Windows 3.1",
+          "B. Windows 95",
+          "C. Windows XP",
+          "D. Windows 11",
+          "E. MS-DOS 6.22"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. Windows 3.1 rilis tahun 1992 dan belum memiliki menu Start modern.",
+          "B": "Benar. Windows 95 merevolusi GUI dengan memperkenalkan tombol Start dan Taskbar.",
+          "C": "Salah. Windows XP rilis tahun 2001.",
+          "D": "Salah. Windows 11 rilis tahun 2021.",
+          "E": "Salah. MS-DOS 6.22 berbasis antarmuka teks."
+        }
+      },
+      {
+        q: "15. Karakteristik utama Sistem Operasi pada Era Modern (2000–Sekarang) meliputi...",
+        opts: [
+          "A. Tergantung pada punch card dan tabung vakum",
+          "B. Terkoneksi ke Cloud, Keamanan Berlapis, Layar Sentuh, dan Lintas Platform",
+          "C. Hanya mendukung pemrosesan 1 program sekali jalan",
+          "D. Tidak mendukung koneksi jaringan internet",
+          "E. Hanya bisa berjalan pada komputer mainframe besar"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. Punch card dan tabung vakum adalah era 1950-an.",
+          "B": "Benar. Modern OS didesain terhubung internet/cloud, aman, mendukung touchscreen, dan bersifat cross-platform.",
+          "C": "Salah. Modern OS mendukung multitasking dan multithreading canggih.",
+          "D": "Salah. Konektivitas internet adalah kebutuhan utama OS modern.",
+          "E": "Salah. OS modern berjalan dari jam tangan pintar hingga superkomputer."
+        }
+      },
+      {
+        q: "16. Sistem operasi mobile berbasis kernel Linux yang menguasai pasar smartphone saat ini adalah...",
+        opts: [
+          "A. iOS",
+          "B. Android",
+          "C. Windows Phone",
+          "D. Symbian",
+          "E. BlackBerry OS"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. iOS berbasis kernel Mach/Darwin dari Apple.",
+          "B": "Benar. Android dikembangkan Google menggunakan fondasi kernel Linux.",
+          "C": "Salah. Windows Phone berbasis Windows NT.",
+          "D": "Salah. Symbian adalah OS smartphone terdahulu buatan Nokia/Nokia-led consortium.",
+          "E": "Salah. BlackBerry OS dikembangkan oleh Research In Motion (RIM)."
+        }
+      },
+      {
+        q: "17. Menurut Andrew S. Tanenbaum, layanan Sistem Operasi yang bertugas mencatat statistik penggunaan sumber daya adalah...",
+        opts: [
+          "A. Pengaksesan I/O Device",
+          "B. Deteksi Kesalahan",
+          "C. Akunting (Accounting)",
+          "D. Pembuatan Program",
+          "E. Pengaksesan Berkas"
+        ],
+        ans: "C",
+        exps: {
+          "A": "Salah. Pengaksesan I/O mengurus operasi baca/tulis hardware periferal.",
+          "B": "Salah. Deteksi Kesalahan mengurus error penanganan sistem.",
+          "C": "Benar. Akunting mencatat waktu dan statistik pemakaian resource komputer.",
+          "D": "Salah. Pembuatan Program menyediakan alat bantu pemrograman.",
+          "E": "Salah. Pengaksesan Berkas mengurus izin proteksi file."
+        }
+      },
+      {
+        q: "18. Analogi fungsi OS dalam Manajemen Aplikasi disamakan dengan...",
+        opts: [
+          "A. Meja belajar yang jika kepenuhan membuat perangkat tidak nyaman",
+          "B. Petugas yang mengatur antrean kasir",
+          "C. Satpam pintu masuk",
+          "D. Kurir pengantar surat",
+          "E. Koki memasak makanan"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. Meja belajar adalah analogi Manajemen Memori.",
+          "B": "Benar. Manajemen aplikasi mengatur giliran eksekusi seperti petugas kasir.",
+          "C": "Salah. Satpam pintu masuk adalah analogi Hak Akses/Keamanan.",
+          "D": "Salah. Kurir pengantar surat adalah analogi Manajemen I/O.",
+          "E": "Salah. Koki memasak adalah analogi kerja prosesor CPU."
+        }
+      },
+      {
+        q: "19. Dalam analogi Manajemen Memori, jika kapasitas memori terlalu penuh/sesak maka akan berdampak pada...",
+        opts: [
+          "A. Antrean kasir semakin cepat",
+          "B. Perangkat menjadi lagging, overheat, atau aplikasi keluar sendiri",
+          "C. Layar komputer otomatis mati secara permanen",
+          "D. File terhapus secara otomatis dari SSD",
+          "E. Koneksi wifi terputus permanen"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. Memori penuh justru memperlambat antrean eksekusi.",
+          "B": "Benar. Memori RAM yang sesak membuat sistem lambat, overheat, atau mengalami crashing.",
+          "C": "Salah. Layar tidak akan mati permanen akibat RAM penuh.",
+          "D": "Salah. RAM bersifat volatile dan tidak menghapus berkas di storage permanen.",
+          "E": "Salah. Masalah memori tidak merusak modul fisik WiFi secara permanen."
+        }
+      },
+      {
+        q: "20. Elemen antarmuka pengguna pada smartphone seperti gesture, notification bar, dan home screen adalah contoh fungsi OS pada...",
+        opts: [
+          "A. Manajemen Aplikasi",
+          "B. Manajemen User Interface (UI)",
+          "C. Manajemen File",
+          "D. Manajemen Memori",
+          "E. Manajemen Jaringan"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. Manajemen Aplikasi berfokus pada penjadwalan proses.",
+          "B": "Benar. Home screen, gesture, dan notification bar adalah komponen antarmuka pengguna (UI).",
+          "C": "Salah. Manajemen File berfokus pada direktori dan penyimpan data.",
+          "D": "Salah. Manajemen Memori berfokus pada alokasi RAM.",
+          "E": "Salah. Manajemen Jaringan mengurus protokol komunikasi data."
+        }
+      },
+      {
+        q: "21. Perintah dasar Linux yang digunakan untuk melihat identitas User ID (UID) dan Group ID (GID) adalah...",
+        opts: [
+          "A. whoami",
+          "B. id",
+          "C. uname",
+          "D. hostname",
+          "E. finger"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. 'whoami' hanya mencetak nama username aktif.",
+          "B": "Benar. 'id' menampilkan UID, GID, dan grup tambahan.",
+          "C": "Salah. 'uname' menunjukkan data sistem operasi.",
+          "D": "Salah. 'hostname' menampilkan nama mesin komputer.",
+          "E": "Salah. 'finger' menampilkan profil lengkap user."
+        }
+      },
+      {
+        q: "22. Format umum penulisan perintah standar pada terminal Linux yang benar adalah...",
+        opts: [
+          "A. $ [Pilihan] [Argumen] NamaInstruksi",
+          "B. $ NamaInstruksi [Pilihan] [Argumen]",
+          "C. $ [Argumen] NamaInstruksi [Pilihan]",
+          "D. $ Execute -> NamaInstruksi",
+          "E. $ Run [Pilihan] [Argumen]"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. NamaInstruksi harus berada di awal setelah prompt shell.",
+          "B": "Benar. Format baku Linux CLI adalah: $ NamaInstruksi [Pilihan/Option] [Argumen].",
+          "C": "Salah. Urutan argumen dan nama perintah tidak sesuai baku.",
+          "D": "Salah. Tidak menggunakan awalan kata Execute.",
+          "E": "Salah. Tidak menggunakan kata panggil Run."
+        }
+      },
+      {
+        q: "23. Untuk melihat tanggal dan waktu sistem saat ini pada Linux, perintah yang digunakan adalah...",
+        opts: [
+          "A. time",
+          "B. date",
+          "C. clock",
+          "D. cal",
+          "E. datetime"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. Perintah 'time' di Linux digunakan untuk mengukur durasi eksekusi suatu program.",
+          "B": "Benar. 'date' mencetak tanggal, waktu, jam, dan zona waktu sistem.",
+          "C": "Salah. 'clock' bukan perintah umum untuk melihat waktu sistem di shell biasa.",
+          "D": "Salah. 'cal' menampilkan kalender bulanan/tahunan.",
+          "E": "Salah. 'datetime' bukan perintah bawaan standar bash."
+        }
+      },
+      {
+        q: "24. Perintah Linux untuk menampilkan kalender 12 bulan penuh dalam satu tampilan tahun adalah...",
+        opts: [
+          "A. cal -a",
+          "B. cal -y",
+          "C. cal -full",
+          "D. cal 12",
+          "E. date -cal"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. Opsi '-a' bukan opsi standar kalender satu tahun penuh.",
+          "B": "Benar. 'cal -y' menampilkan kalender lengkap 12 bulan untuk tahun berjalan.",
+          "C": "Salah. Opsi '-full' tidak dikenal oleh utilitas cal standar.",
+          "D": "Salah. 'cal 12' akan mencari bulan ke-12 (Desember) pada tahun 1 Masehi.",
+          "E": "Salah. Sintaks perintah tidak valid."
+        }
+      },
+      {
+        q: "25. Perintah Linux yang digunakan untuk melihat informasi lengkap arsitektur sistem, nama mesin, dan rilis versi kernel adalah...",
+        opts: [
+          "A. uname -a",
+          "B. id -all",
+          "C. hostname -v",
+          "D. who -a",
+          "E. ls -sys"
+        ],
+        ans: "A",
+        exps: {
+          "A": "Benar. 'uname -a' menampilkan informasi menyeluruh tentang kernel dan arsitektur hardware.",
+          "B": "Salah. 'id -all' bukan opsi standar perintah id.",
+          "C": "Salah. 'hostname' hanya menampilkan nama host mesin.",
+          "D": "Salah. 'who -a' menampilkan rincian login sesi pengguna.",
+          "E": "Salah. 'ls' digunakan untuk daftar file, bukan info sistem."
+        }
+      },
+      {
+        q: "26. Perintah untuk memantau siapa saja pengguna yang sedang aktif/login beserta aktivitas beban CPU dan waktu uptime adalah...",
+        opts: [
+          "A. whoami",
+          "B. w",
+          "C. id",
+          "D. finger",
+          "E. hostname"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. 'whoami' hanya mencetak nama akun sendiri.",
+          "B": "Benar. Perintah 'w' menampilkan pengguna aktif, tty terminal, uptime, dan beban utilisasi sistem.",
+          "C": "Salah. Perintah 'id' menampilkan UID/GID.",
+          "D": "Salah. 'finger' menampilkan kontak profil finger pengguna.",
+          "E": "Salah. 'hostname' menampilkan nama mesin."
+        }
+      },
+      {
+        q: "27. Jika Anda ingin mengubah informasi profil pengguna seperti nama lengkap, nomor kantor, dan telepon, perintah yang digunakan adalah...",
+        opts: [
+          "A. chown",
+          "B. chfn",
+          "C. chmod",
+          "D. chgrp",
+          "E. passwd"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. 'chown' (change owner) mengubah pemilik file.",
+          "B": "Benar. 'chfn' (change finger) digunakan untuk mengubah informasi profil finger user.",
+          "C": "Salah. 'chmod' (change mode) mengubah izin akses berkas.",
+          "D": "Salah. 'chgrp' (change group) mengubah grup pemilik berkas.",
+          "E": "Salah. 'passwd' digunakan khusus untuk mengubah kata sandi."
+        }
+      },
+      {
+        q: "28. Halaman buku petunjuk manual resmi untuk mempelajari penggunaan suatu perintah di Linux dibuka dengan instruksi...",
+        opts: [
+          "A. help <perintah>",
+          "B. man <perintah>",
+          "C. find <perintah>",
+          "D. doc <perintah>",
+          "E. show <perintah>"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. 'help' khusus untuk perintah internal shell (built-in).",
+          "B": "Benar. Perintah 'man' (manual) membuka halaman panduan resmi sistem.",
+          "C": "Salah. 'find' digunakan untuk mencari letak berkas.",
+          "D": "Salah. 'doc' bukan perintah baku Linux CLI.",
+          "E": "Salah. 'show' bukan utilitas manual Linux."
+        }
+      },
+      {
+        q: "29. Saat membuka halaman manual dengan 'man ls', langkah cepat untuk melakukan pencarian kata kunci seperti 'sort' adalah...",
+        opts: [
+          "A. Ketik /sort lalu tekan Enter",
+          "B. Tekan Ctrl + F lalu ketik sort",
+          "C. Ketik find sort lalu tekan Enter",
+          "D. Tekan Alt + S",
+          "E. Ketik search:sort"
+        ],
+        ans: "A",
+        exps: {
+          "A": "Benar. Di dalam pager manual (less), mengetik karakter garis miring '/' diikuti kata kunci akan melakukan pencarian maju.",
+          "B": "Salah. Ctrl+F pada terminal biasanya tidak memicu pencarian internal manual.",
+          "C": "Salah. Perintah find tidak berfungsi saat halaman manual sedang terbuka.",
+          "D": "Salah. Kombinasi Alt+S tidak dikenal dalam pager less.",
+          "E": "Salah. Format search:sort tidak valid di pager man."
+        }
+      },
+      {
+        q: "30. Perintah Linux yang digunakan untuk menghapus dan membersihkan seluruh tampilan teks pada layar terminal adalah...",
+        opts: [
+          "A. cls",
+          "B. clear",
+          "C. delete",
+          "D. clean",
+          "E. erase"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. 'cls' adalah perintah pembersih layar pada MS-DOS / Windows Command Prompt.",
+          "B": "Benar. 'clear' adalah perintah standar pembersih layar konsol Linux.",
+          "C": "Salah. 'delete' bukan perintah pembersih terminal.",
+          "D": "Salah. 'clean' bukan utilitas pembersih konsol Linux.",
+          "E": "Salah. 'erase' bukan perintah baku pembersih layar."
+        }
+      },
+      {
+        q: "31. Untuk mencari daftar perintah yang deskripsi ringkasnya mengandung kata kunci tertentu (misal: 'date'), perintah yang digunakan adalah...",
+        opts: [
+          "A. whatis date",
+          "B. apropos date",
+          "C. grep date",
+          "D. find date",
+          "E. locate date"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. 'whatis' hanya mencocokkan kata kunci secara tepat sama (exact match).",
+          "B": "Benar. 'apropos' mencari seluruh deskripsi manual yang mengandung kata kunci tersebut.",
+          "C": "Salah. 'grep' mencari pola kata di dalam berkas teks.",
+          "D": "Salah. 'find' mencari nama berkas di direktori.",
+          "E": "Salah. 'locate' mencari letak direktori berkas berdasarkan database."
+        }
+      },
+      {
+        q: "32. Perintah yang memberikan rincian deskripsi tepat satu baris yang pencariannya harus persis sama dengan nama perintah adalah...",
+        opts: [
+          "A. apropos",
+          "B. whatis",
+          "C. man",
+          "D. file",
+          "E. type"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. 'apropos' melakukan pencarian substring pada seluruh deskripsi.",
+          "B": "Benar. 'whatis' menampilkan deskripsi singkat 1 baris dari nama perintah yang tepat sama.",
+          "C": "Salah. 'man' menampilkan dokumen manual lengkap bertingkat.",
+          "D": "Salah. 'file' mendeteksi tipe format berkas.",
+          "E": "Salah. 'type' menjelaskan bagaimana perintah akan diinterpretasikan shell."
+        }
+      },
+      {
+        q: "33. Perintah 'ls -a -l' dan 'ls -al' jika dieksekusi pada terminal Linux akan menghasilkan...",
+        opts: [
+          "A. Hasil keluaran yang berbeda karena penulisan dipisah membatalkan fungsi",
+          "B. Hasil keluaran yang sama persis karena shell mendukung fleksibilitas penulisan opsi flag jamak",
+          "C. Pesan error galat sintaks",
+          "D. Penghapusan seluruh file secara otomatis",
+          "E. Penguncian terminal"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. Penulisan dipisah maupun digabung dikenali sama oleh parser shell.",
+          "B": "Benar. Kedua sintaks menghasilkan daftar berkas terperinci beserta hidden file secara identik.",
+          "C": "Salah. Tidak terjadi error sintaks.",
+          "D": "Salah. Perintah ls hanya membaca berkas, tidak menghapus.",
+          "E": "Salah. Tidak mengunci terminal."
+        }
+      },
+      {
+        q: "34. Perintah Linux yang digunakan untuk mengetahui dan mendeteksi tipe data atau format suatu berkas adalah...",
+        opts: [
+          "A. type",
+          "B. file",
+          "C. cat",
+          "D. ls -t",
+          "E. stat"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. 'type' mengidentifikasi kategori perintah shell.",
+          "B": "Benar. Perintah 'file' mendeteksi tipe dan format berkas (misal: ASCII text, ELF 64-bit executable).",
+          "C": "Salah. 'cat' menampilkan isi teks berkas.",
+          "D": "Salah. 'ls -t' mengurutkan daftar file berdasarkan waktu modifikasi.",
+          "E": "Salah. 'stat' menampilkan status atribut inode file."
+        }
+      },
+      {
+        q: "35. Perintah untuk menyalin (copy) berkas 'f1' menjadi berkas baru bernama 'f2' adalah...",
+        opts: [
+          "A. mv f1 f2",
+          "B. cp f1 f2",
+          "C. ln f1 f2",
+          "D. touch f1 f2",
+          "E. cat f1 > f2"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. 'mv' akan memindahkan atau mengubah nama file (file f1 asli hilang).",
+          "B": "Benar. 'cp f1 f2' menyalin berkas f1 ke f2 tanpa menghapus f1.",
+          "C": "Salah. 'ln' membuat tautan (link) berkas.",
+          "D": "Salah. 'touch' membuat berkas kosong.",
+          "E": "Salah. Walaupun bisa menyalin lewat pengalihan output, perintah standar penyalinan adalah cp."
+        }
+      },
+      {
+        q: "36. Opsi '-i' pada perintah 'cp -i' atau 'rm -i' memiliki fungsi protektif yaitu...",
+        opts: [
+          "A. Menjalankan proses secara tersembunyi (invisible)",
+          "B. Meminta konfirmasi interaktif kepada pengguna sebelum menimpa atau menghapus berkas",
+          "C. Mengabaikan semua galat (ignore errors)",
+          "D. Mengkompresi ukuran berkas",
+          "E. Mengubah izin berkas menjadi read-only"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. Opsi -i bukan singkatan dari invisible.",
+          "B": "Benar. Opsi '-i' (interactive) meminta konfirmasi persetujuan (y/n) pengguna sebelum eksekusi berisiko.",
+          "C": "Salah. Mengabaikan galat biasanya menggunakan opsi -f (force).",
+          "D": "Salah. Tidak berhubungan dengan kompresi.",
+          "E": "Salah. Tidak mengubah atribut chmod file."
+        }
+      },
+      {
+        q: "37. Perintah yang digunakan untuk membuat direktori baru bernama 'prak1' adalah...",
+        opts: [
+          "A. create prak1",
+          "B. mkdir prak1",
+          "C. newdir prak1",
+          "D. folder prak1",
+          "E. touch prak1"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. 'create' bukan perintah baku pembuat direktori di Linux.",
+          "B": "Benar. 'mkdir' (make directory) adalah perintah resmi pembuat direktori baru.",
+          "C": "Salah. 'newdir' bukan perintah Linux.",
+          "D": "Salah. 'folder' bukan instruksi shell Linux.",
+          "E": "Salah. 'touch' digunakan untuk membuat berkas biasa, bukan direktori."
+        }
+      },
+      {
+        q: "38. Perintah untuk menampilkan isi dari berkas teks panjang secara bertahap per satu layar penuh (paging) adalah...",
+        opts: [
+          "A. cat",
+          "B. more",
+          "C. ls",
+          "D. head -a",
+          "E. echo"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. 'cat' langsung menggulung seluruh isi file ke layar tanpa henti.",
+          "B": "Benar. 'more' menampilkan isi file bertahap per layar penuh.",
+          "C": "Salah. 'ls' menampilkan daftar nama file di direktori.",
+          "D": "Salah. 'head' menampilkan beberapa baris awal berkas.",
+          "E": "Salah. 'echo' mencetak string teks ke layar."
+        }
+      },
+      {
+        q: "39. Simbol tilde (~) dalam penulisan path di Linux CLI (misal: `mv f1 ~`) mewakili lokasi...",
+        opts: [
+          "A. Direktori Root ( / )",
+          "B. Direktori Home milik pengguna aktif ( /home/username )",
+          "C. Direktori sementara ( /tmp )",
+          "D. Direktori sistem binaries ( /bin )",
+          "E. Direktori konfigurasi ( /etc )"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. Direktori root dilambangkan dengan garis miring tunggal '/'.",
+          "B": "Benar. Simbol tilde '~' adalah pintasan shell menuju direktori home pengguna aktif.",
+          "C": "Salah. Direktori temporary diwakili path /tmp.",
+          "D": "Salah. Direktori binaries sistem diwakili path /bin.",
+          "E": "Salah. Direktori konfigurasi diwakili path /etc."
+        }
+      },
+      {
+        q: "40. Perintah 'grep root /etc/passwd' berfungsi untuk...",
+        opts: [
+          "A. Menghapus akun root dari file /etc/passwd",
+          "B. Mencari dan menampilkan baris teks yang mengandung kata 'root' di dalam berkas /etc/passwd",
+          "C. Mengubah kata sandi pengguna root",
+          "D. Menyalin file /etc/passwd ke folder root",
+          "E. Mengunci berkas /etc/passwd"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. grep tidak menghapus isi berkas.",
+          "B": "Benar. grep mencari pola kata 'root' dan mencetak baris yang cocok dari berkas /etc/passwd.",
+          "C": "Salah. Mengubah kata sandi menggunakan perintah passwd.",
+          "D": "Salah. Menyalin berkas menggunakan perintah cp.",
+          "E": "Salah. Mengunci berkas dilakukan via chmod atau chattr."
+        }
+      },
+      {
+        q: "41. Dalam praktikum virtualisasi, perangkat komputer laptop/PC fisik utama tempat instalasi VirtualBox disebut sebagai...",
+        opts: [
+          "A. Guest OS",
+          "B. Host OS",
+          "C. Virtual Machine",
+          "D. Container Host",
+          "E. Emulated OS"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. Guest OS adalah sistem operasi virtual di dalam VM.",
+          "B": "Benar. Host OS adalah sistem operasi fisik utama tempat installer VirtualBox berjalan.",
+          "C": "Salah. Virtual Machine adalah lingkungan tiruan komputer.",
+          "D": "Salah. Container Host merujuk pada platform seperti Docker.",
+          "E": "Salah. Emulated OS adalah istilah umum OS emulasi."
+        }
+      },
+      {
+        q: "42. Peran utama perangkat lunak Oracle VM VirtualBox adalah sebagai...",
+        opts: [
+          "A. Guest OS",
+          "B. Hypervisor / Software perantara pengelola alokasi sumber daya fisik ke mesin virtual",
+          "C. Antivirus sistem utama",
+          "D. Pengedit gambar grafis",
+          "E. Pengatur BIOS fisik laptop"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. VirtualBox bukan Guest OS melainkan pengelolanya.",
+          "B": "Benar. VirtualBox berfungsi sebagai Hypervisor (Type-2) pengelola alokasi resource ke Virtual Machine.",
+          "C": "Salah. VirtualBox bukan aplikasi antivirus.",
+          "D": "Salah. VirtualBox bukan pengedit grafis.",
+          "E": "Salah. VirtualBox tidak merubah BIOS fisik laptop secara langsung."
+        }
+      },
+      {
+        q: "43. Sistem operasi yang berjalan secara terisolasi di dalam mesin virtual (Virtual Machine) dinamakan...",
+        opts: [
+          "A. Host OS",
+          "B. Guest OS",
+          "C. Master OS",
+          "D. Core OS",
+          "E. Primary OS"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. Host OS adalah OS fisik luar.",
+          "B": "Benar. Guest OS adalah sistem operasi yang dipasang dan berjalan di dalam Virtual Machine.",
+          "C": "Salah. Master OS bukan istilah dalam VirtualBox.",
+          "D": "Salah. Core OS merujuk pada distro Linux spesifik.",
+          "E": "Salah. Primary OS biasanya merujuk pada Host OS."
+        }
+      },
+      {
+        q: "44. Dampak utama jika alokasi resource RAM dan CPU dialokasikan TERLALU SEDIKIT ke Virtual Machine adalah...",
+        opts: [
+          "A. Laptop fisik utama langsung mengalami crash panas",
+          "B. Virtual Machine berjalan sangat lambat, aplikasi di dalam VM sering berhenti merespons (lag)",
+          "C. Kapasitas harddisk fisik laptop otomatis penuh",
+          "D. VirtualBox menghapus file ISO secara otomatis",
+          "E. Layar laptop fisik menjadi buram"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. Resource sedikit justru menghemat beban laptop fisik.",
+          "B": "Benar. Alokasi terlalu kecil membuat VM kekurangan daya komputasi sehingga lambat dan sering crash.",
+          "C": "Salah. Alokasi RAM/CPU tidak mempengaruhi sisa kapasitas harddisk.",
+          "D": "Salah. File ISO tidak dihapus oleh VirtualBox.",
+          "E": "Salah. Tidak berdampak fisik pada kejernihan layar."
+        }
+      },
+      {
+        q: "45. Dampak utama jika alokasi resource RAM dan CPU dialokasikan TERLALU BANYAK (mendekati total kapasitas fisik) ke Virtual Machine adalah...",
+        opts: [
+          "A. Virtual Machine akan berjalan tanpa membutuhkan listrik",
+          "B. Laptop fisik (Host) kehabisan sumber daya, menjadi lag parah, bahkan mengalami crash/BSOD",
+          "C. Kecepatan koneksi internet laptop meningkat 10 kali lipat",
+          "D. VirtualBox otomatis mengubah OS menjadi open-source",
+          "E. Virtual Machine tidak memerlukan penyimpanan Virtual Disk"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. Komputer tetap memerlukan energi listrik.",
+          "B": "Benar. Mengalokasikan seluruh RAM fisik ke VM membuat Host OS kehabisan memori sehingga komputer utama hang/crash.",
+          "C": "Salah. Tidak mempengaruhi kecepatan bandwidth internet.",
+          "D": "Salah. Lisensi OS tidak berubah akibat alokasi resource.",
+          "E": "Salah. Storage tetap dibutuhkan untuk menyimpan data."
+        }
+      },
+      {
+        q: "46. Jembatan jaringan virtual yang berfungsi menghubungkan antarmuka jaringan Virtual Machine dengan laptop utama dinamakan...",
+        opts: [
+          "A. Storage Controller",
+          "B. Network Adapter",
+          "C. Shared Folder",
+          "D. Display Driver",
+          "E. USB Controller"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. Storage Controller mengurus akses berkas virtual disk.",
+          "B": "Benar. Network Adapter mengelola konfigurasi kartu jaringan virtual (NAT, Bridged, Host-Only).",
+          "C": "Salah. Shared Folder untuk berbagi berkas antar OS.",
+          "D": "Salah. Display Driver mengurus output grafis layar VM.",
+          "E": "Salah. USB Controller mengurus perangkat USB passthrough."
+        }
+      },
+      {
+        q: "47. Berdasarkan hasil praktikum laporan MX Linux vs Xubuntu, alasan MX Linux lebih sesuai untuk laptop spesifikasi terbatas adalah...",
+        opts: [
+          "A. MX Linux tidak menggunakan memori RAM sama sekali",
+          "B. Konsumsi RAM MX Linux saat kondisi diam (idle) sangat ringan berkat basis Debian Stable tanpa banyak servis tersembunyi",
+          "C. MX Linux tidak memiliki antarmuka grafis (hanya teks)",
+          "D. MX Linux menghapus kebutuhan prosesor CPU",
+          "E. MX Linux hanya bisa diinstal via jaringan internet"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. Semua OS membutuhkan RAM untuk berjalan.",
+          "B": "Benar. MX Linux berbasis Debian Stable dengan desktop ringan (Xfce) yang hemat konsumsi RAM saat idle.",
+          "C": "Salah. MX Linux dilengkapi antarmuka grafis desktop lengkap.",
+          "D": "Salah. OS tetap memerlukan CPU untuk eksekusi instruksi.",
+          "E": "Salah. MX Linux dapat diinstal secara offline via ISO."
+        }
+      },
+      {
+        q: "48. Mengapa saat notifikasi gangguan jaringan terputus sementara muncul sewaktu instalasi VirtualBox, kita harus melanjutkan (klik Yes)?",
+        opts: [
+          "A. Untuk menghapus koneksi internet secara permanen",
+          "B. Agar komponen driver jaringan virtual (Virtual Network Adapter) terpasang sempurna untuk konektivitas VM",
+          "C. Untuk memformat ulang harddisk laptop",
+          "D. Agar installer VirtualBox dapat mendownload OS Windows baru",
+          "E. Untuk mematikan sistem keamanan Windows Firewall secara permanen"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. Putusnya jaringan hanya berlangsung beberapa detik saat driver terpasang.",
+          "B": "Benar. Pemasangan driver kartu jaringan virtual memerlukan reset singkat adaptor jaringan.",
+          "C": "Salah. Instalasi VirtualBox tidak memformat harddisk Host.",
+          "D": "Salah. Installer VirtualBox tidak mendownload OS Windows.",
+          "E": "Salah. Firewall tidak dimatikan permanen."
+        }
+      },
+      {
+        q: "49. Fitur bawaan MX Linux yang memberikan kemudahan cadangan (backup) sistem penuh ke dalam bentuk citra terisolasi adalah...",
+        opts: [
+          "A. MX Welcome",
+          "B. MX Snapshot",
+          "C. Xfce Panel",
+          "D. GParted",
+          "E. Synaptic"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. MX Welcome adalah jendela penyambut petunjuk awal.",
+          "B": "Benar. MX Snapshot memungkinkan pembuat cadangan ISO dari sistem yang sedang berjalan.",
+          "C": "Salah. Xfce Panel adalah bilah menu antarmuka desktop.",
+          "D": "Salah. GParted adalah alat manajer partisi disk.",
+          "E": "Salah. Synaptic adalah manajer paket aplikasi."
+        }
+      },
+      {
+        q: "50. Ekstensi file citra (*image*) standar yang digunakan sebagai media instalasi sistem operasi pada Virtual Machine adalah...",
+        opts: [
+          "A. .exe",
+          "B. .iso",
+          "C. .docx",
+          "D. .mp4",
+          "E. .zip"
+        ],
+        ans: "B",
+        exps: {
+          "A": "Salah. .exe adalah file executable pada Windows.",
+          "B": "Benar. File .iso adalah format standar citra disk optik yang memuat master instalasi OS.",
+          "C": "Salah. .docx adalah dokumen teks Microsoft Word.",
+          "D": "Salah. .mp4 adalah berkas video.",
+          "E": "Salah. .zip adalah berkas arsip terkompresi."
+        }
+      }
+    ];
+
+    // DATA SOAL ESSAI (10 SOAL)
+    const questionsEssay = [
+      {
+        q: "1. Jelaskan perbedaan mendasar antara Tujuan OS (Efisiensi, Kemudahan, Keamanan, Kenyamanan) dan Sasaran OS (Pengguna, Sistem, Pengembang) serta berikan contoh aplikatifnya!",
+        key: "• TUJUAN OS menekankan pada KUALITAS LAYANAN teknis: Efisiensi (alokasi CPU/RAM optimal tanpa idle lama), Kemudahan (antarmuka ramah/GUI), Keamanan (enkripsi, kata sandi, biometrik), dan Kenyamanan (multitasking lancar).\n• SASARAN OS menekankan pada SUBJEK/PIHAK yang dilayani: Sasaran Pengguna (lingkungan cepat & nyaman), Sasaran Sistem (penggunaan sumber daya adil & efisien), dan Sasaran Pengembang (tersedianya API standar tanpa merakit program hardware fisik).\n• Contoh: Saat mengetik dokumen sambil mendengarkan musik, OS memenuhi tujuan kenyamanan (multitasking) dan sasaran sistem (pembagian waktu CPU yang adil)."
+      },
+      {
+        q: "2. Uraikan 5 fungsi utama Sistem Operasi beserta analogi sederhananya!",
+        key: "1. Manajemen Aplikasi: Seperti Petugas Antrean Kasir yang mengatur giliran dan durasi eksekusi program.\n2. Manajemen Memori: Seperti Meja Belajar tempat menampung data sementara; jika terlalu penuh akan membuat sistem lagging/overheat.\n3. Manajemen File: Seperti Lemari Arsip yang mengelola operasi membaca, membuat, menyimpan, memindahkan, dan menghapus berkas.\n4. Manajemen I/O: Seperti Kurir / Penerjemah Perintah yang menghubungkan input keyboard/mouse ke aplikasi dan meneruskan hasilnya ke layar monitor/printer.\n5. Manajemen UI: Seperti Tata Letak Toko / Pajangan Display yang menyediakan antarmuka visual (desktop, icon, menu, gesture)."
+      },
+      {
+        q: "3. Jelaskan ringkasan evolusi Sistem Operasi dari Era 1950-an (Batch System) hingga Era Modern (Cloud, Mobile, IoT)!",
+        key: "• 1950-an (Batch Era): Komputer mainframe raksasa berbasist tabung vakum; mengeksekusi 1 program sekali jalan tanpa interaksi pengguna via punch card.\n• 1960-an (Time-Sharing & IC): Mulai menggunakan Integrated Circuit (IC); lahir konsep multiprogramming dan time-sharing (IBM OS/360, CTSS).\n• 1970-an (UNIX & Microprocessor): Lahir mikroprosesor dan OS portabel legendaris UNIX di Bell Labs serta CP/M.\n• 1980-1990an (GUI & PC): Era PC rumah; meledaknya antarmuka GUI (Macintosh, Windows 95) dan lahirnya kernel Linux oleh Linus Torvalds (1991).\n• 2000-Sekarang (Modern/Mobile/Cloud): Perangkat mobile (Android, iOS), terhubung internet/cloud, keamanan berlapis, dan IoT."
+      },
+      {
+        q: "4. Berdasarkan praktikum VirtualBox, jelaskan hubungan antara Host OS, VirtualBox (Hypervisor), dan Guest OS!",
+        key: "• Host OS: Sistem operasi utama yang terpasang langsung di perangkat keras fisik laptop/PC (penyedia sumber daya hardware asli).\n• VirtualBox: Software perantara (Hypervisor Type-2) yang mengelola dan membagi alokasi sumber daya fisik laptop ke mesin virtual.\n• Guest OS: Sistem operasi virtual yang terisolasi dan berjalan di dalam Virtual Machine (misalnya Linux MX/Ubuntu di dalam Windows Host) tanpa mengganggu Host OS."
+      },
+      {
+        q: "5. Tuliskan urutan perintah dasar Linux untuk menyelesaikan tugas praktikum berikut:\n   a. Membuat direktori 'prak1'\n   b. Menyalin file '/etc/group' ke dalam 'prak1' menjadi file 'tes1'\n   c. Menampilkan isi file 'tes1' per satu layar penuh\n   d. Memindahkan file 'tes1' ke direktori home (~)\n   e. Menghapus file 'tes1' di direktori home dengan konfirmasi interaktif",
+        key: "a. mkdir prak1\nb. cp /etc/group prak1/tes1\nc. more prak1/tes1\nd. mv prak1/tes1 ~\ne. rm -i ~/tes1"
+      },
+      {
+        q: "6. Jelaskan fungsi dari perintah 'uname -a', 'id', 'w', dan 'chfn' dalam pengujian identitas pengguna dan sistem Linux!",
+        key: "• uname -a: Menampilkan rincian lengkap arsitektur mesin, nama host, dan versi rilis kernel Linux.\n• id: Menampilkan identitas UID (User ID), GID (Group ID), dan daftar kelompok grup pengguna.\n• w: Memantau pengguna yang sedang aktif/login beserta uptime, terminal tty, dan beban utilisasi CPU.\n• chfn: Mengubah data profil finger pengguna (seperti nama lengkap, nomor ruangan laboratorium, dan telepon)."
+      },
+      {
+        q: "7. Mengapa alokasi resource RAM dan CPU pada Virtual Machine harus direncanakan secara tepat? Apa dampaknya jika alokasi terlalu sedikit atau terlalu banyak?",
+        key: "• Jika alokasi terlalu sedikit: VM akan bekerja sangat lambat, aplikasi di dalam VM sering lagging/freeze, dan proses instalasi OS gagal.\n• Jika alokasi terlalu banyak: Host OS (laptop utama) akan kehabisan sumber daya memori dan daya prosesor, menyebabkan laptop fisik mengalami crash/hang parah (BSOD).\n• Perencanaan tepat menjamin VM berjalan lancar tanpa mengganggu stabilitas Host OS."
+      },
+      {
+        q: "8. Apa perbedaan fungsi antara perintah pemantau 'who', 'whoami', dan 'finger' di Linux?",
+        key: "• who: Menampilkan daftar nama akun pengguna yang sedang login di sistem beserta nama terminal dan waktu login.\n• whoami: Mencetak satu nama akun pengguna aktif yang sedang mengoperasikan sesi shell terminal saat ini.\n• finger: Menampilkan rincian profil lengkap informasi finger pengguna (seperti nama lengkap, lokasi kantor, nomor telepon, dan status email/mail)."
+      },
+      {
+        q: "9. Sebutkan dan jelaskan 4 dari 8 layanan Sistem Operasi menurut Andrew S. Tanenbaum!",
+        key: "1. Pembuatan Program: Menyediakan fasilitas editor dan debugger untuk membantu programmer.\n2. Eksekusi Program: Memuat instruksi program ke memori RAM dan menjalankan CPU.\n3. Pengaksesan I/O Device: Menyediakan antarmuka standar untuk operasi baca/tulis ke hardware periferal.\n4. Akunting (Accounting): Mencatat statistik jenis dan durasi penggunaan sumber daya komputer oleh pengguna."
+      },
+      {
+        q: "10. Mengapa penulisan perintah dengan path mutlak (absolute path) sangat penting dalam navigasi CLI Linux? Berikan contohnya!",
+        key: "• Path mutlak (diawali dari root '/') sangat penting karena menunjuk lokasi berkas secara pasti dari direktori puncak sistem, sehingga perintah tidak akan gagal atau terpengaruh oleh posisi direktori aktif saat ini.\n• Contoh: Penulisan 'cp /etc/group prak1/tes1' memastikan berkas group di /etc selalu ditemukan meskipun pengguna sedang berada di dalam sub-direktori lain."
+      }
+    ];
+
+    let correctCount = 0;
+
+    // RENDER SOAL PILIHAN GANDA
+    function renderPG() {
+      const container = document.getElementById('pg-container');
+      questionsPG.forEach((q, index) => {
+        const card = document.createElement('div');
+        card.className = 'question-card';
+        
+        let optsHTML = '';
+        q.opts.forEach((opt, optIndex) => {
+          const char = String.fromCharCode(65 + optIndex);
+          optsHTML += `<button class="option-btn" onclick="checkPG(${index}, '${char}', this)">${opt}</button>`;
+        });
+
+        card.innerHTML = `
+          <div class="question-text">${q.q}</div>
+          <div class="options" id="opts-${index}">${optsHTML}</div>
+          <div class="feedback-box" id="feedback-${index}"></div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // CHECK PILIHAN GANDA (MEMBUKA PENJELASAN UNTUK SEMUA OPSI A-E)
+    function checkPG(qIndex, selectedChar, btn) {
+      const q = questionsPG[qIndex];
+      const optsContainer = document.getElementById(`opts-${qIndex}`);
+      const buttons = optsContainer.querySelectorAll('.option-btn');
+      const feedback = document.getElementById(`feedback-${qIndex}`);
+
+      // Nonaktifkan semua tombol pada soal ini setelah dijawab
+      buttons.forEach(b => b.disabled = true);
+
+      let isCorrect = (selectedChar === q.ans);
+
+      if (isCorrect) {
+        btn.classList.add('selected-correct');
+        feedback.className = 'feedback-box correct';
+        correctCount++;
+      } else {
+        btn.classList.add('selected-wrong');
+        buttons.forEach((b, idx) => {
+          if (String.fromCharCode(65 + idx) === q.ans) {
+            b.classList.add('show-correct');
+          }
+        });
+        feedback.className = 'feedback-box wrong';
+      }
+
+      // BUAT RINCIAN PENJELASAN UNTUK SETIAP OPSI A, B, C, D, E
+      let expsHTML = '<div style="margin-top:8px; font-weight:bold;">Rincian Penjelasan Setiap Opsi:</div><ul class="option-explanation-list">';
+      ['A', 'B', 'C', 'D', 'E'].forEach((char) => {
+        const isOptCorrect = (char === q.ans);
+        const expClass = isOptCorrect ? 'opt-correct-bg' : 'opt-wrong-bg';
+        const statusLabel = isOptCorrect ? '[KUNCI BENAR]' : '[OPSI SALAH]';
+        expsHTML += `
+          <li class="option-explanation-item ${expClass}">
+            <strong>Opsi ${char} ${statusLabel}:</strong> ${q.exps[char]}
+          </li>
+        `;
+      });
+      expsHTML += '</ul>';
+
+      feedback.innerHTML = `
+        <div><strong>STATUS JAWABAN ANDA: ${isCorrect ? 'BENAR (+1 Poin)' : 'SALAH'}</strong></div>
+        <div>Jawaban Anda: <strong>Opsi ${selectedChar}</strong> | Kunci Jawaban Resmi: <strong>Opsi ${q.ans}</strong></div>
+        ${expsHTML}
+      `;
+
+      feedback.style.display = 'block';
+      updateScore();
+    }
+
+    // UPDATE SKOR REALTIME
+    function updateScore() {
+      document.getElementById('score-val').innerText = `${correctCount} / ${questionsPG.length}`;
+      const percentage = (correctCount / questionsPG.length) * 100;
+      document.getElementById('score-text').innerText = `Nilai Akhir Pilihan Ganda: ${percentage.toFixed(1)} / 100`;
+    }
+
+    // RENDER SOAL ESSAI
+    function renderEssay() {
+      const container = document.getElementById('essay-container');
+      questionsEssay.forEach((q, index) => {
+        const card = document.createElement('div');
+        card.className = 'question-card';
+        card.innerHTML = `
+          <div class="question-text">${q.q}</div>
+          <textarea class="essay-input" id="essay-input-${index}" placeholder="Ketikkan jawaban uraian Anda secara lengkap di sini..."></textarea>
+          <button class="submit-essay-btn" onclick="submitEssay(${index}, this)">Kirim & Lihat Kunci Jawaban</button>
+          <div class="feedback-box essay-key" id="essay-feedback-${index}"></div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // SUBMIT ESSAI
+    function submitEssay(index, btn) {
+      const input = document.getElementById(`essay-input-${index}`);
+      const feedback = document.getElementById(`essay-feedback-${index}`);
+      
+      if (input.value.trim() === "") {
+        alert("Silakan isi jawaban Anda terlebih dahulu sebelum melihat kunci jawaban!");
+        return;
+      }
+
+      input.disabled = true;
+      btn.disabled = true;
+      btn.innerText = "Jawaban Terkirim";
+
+      feedback.innerHTML = `<strong>KUNCI JAWABAN & RUBRIK PENILAIAN RESMI:</strong><br>${questionsEssay[index].key.replace(/\n/g, '<br>')}`;
+      feedback.style.display = 'block';
+    }
+
+    // INISIALISASI HALAMAN
+    window.onload = function() {
+      renderPG();
+      renderEssay();
+    };
+  </script>
+</body>
+</html>
